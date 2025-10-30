@@ -1,0 +1,255 @@
+/* Local: sabio-forno-app/src/pages/MinhaContaPage.css */
+
+/* Grid principal para os 4 cards */
+.conta-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas */
+  gap: 1.5rem;
+}
+
+/* Card base */
+.conta-card {
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+}
+
+/* Faz um card ocupar as duas colunas */
+.span-col-2 {
+  grid-column: 1 / -1; /* Ocupa do início ao fim */
+}
+
+/* Título de cada card */
+.conta-card-title {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343A40;
+  border-bottom: 1px solid #E9ECEF;
+  padding-bottom: 0.75rem;
+}
+
+/* --- Card 1: Meus Dados --- */
+.user-data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.user-data-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #495057;
+}
+.user-data-item span {
+  color: #6C757D;
+}
+.user-data-item strong {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* --- Card 2: Meus Plano (Fictício) --- */
+.plano-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.plano-nome {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #6D4C41;
+}
+.plano-descricao {
+  font-size: 1rem;
+  color: #6C757D;
+  margin: 0.5rem 0 1rem 0;
+}
+.plano-button {
+  padding: 0.75rem 1rem;
+  border: none;
+  background-color: #8d9e67; /* Verde oliva do design */
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-self: flex-start; /* Alinha o botão à esquerda */
+}
+.plano-button:hover {
+  background-color: #7a8a59;
+}
+.plano-button:disabled {
+  background-color: #aeb89a;
+  cursor: not-allowed;
+}
+
+
+/* --- Card 3: Gerenciar Unidades --- */
+.unidade-add-form {
+  display: grid;
+  grid-template-columns: 1fr auto; /* Input cresce, botão tem tamanho fixo */
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+.unidade-add-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+.unidade-add-form input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #CED4DA;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Urbanist', sans-serif;
+  background-color: #FFF;
+  width: 100%;
+  box-sizing: border-box;
+}
+.unidade-add-form button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #5ba354;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap; /* Evita que "Adicionar" quebre a linha */
+}
+
+/* Lista de unidades */
+.gerenciamento-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.gerenciamento-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 0.5rem;
+  border-bottom: 1px solid #E9ECEF;
+}
+.gerenciamento-list li:last-child { border-bottom: none; }
+.gerenciamento-list li span {
+  font-weight: 500;
+  color: #343A40;
+}
+.gerenciamento-list .actions {
+  display: flex;
+  gap: 1.25rem;
+}
+
+/* --- Card 4: Gerenciar Usuários Filho --- */
+.child-user-add-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto; /* 3 inputs + 1 botão */
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+.child-user-add-form .form-button-redesign {
+  flex-grow: 0;
+  white-space: nowrap;
+  background-color: #5ba354;
+  align-self: anchor-center;
+  margin-top: 11px;
+}
+
+/* Tabela de Usuários Filho */
+.child-user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+.child-user-table th,
+.child-user-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #E9ECEF;
+  color: #495057;
+}
+.child-user-table th {
+  background-color: #f9f9f9;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6C757D;
+}
+.child-user-table tr:last-child td {
+  border-bottom: none;
+}
+.child-user-table .actions-cell {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+/* Estilos de ícones reutilizados */
+.icon-redesign {
+  cursor: pointer;
+  stroke-width: 2.5px;
+  transition: color 0.2s;
+  color: #6C757D;
+}
+.icon-edit-redesign:hover { color: #1e88e5; }
+.icon-delete-redesign:hover { color: #c62828; }
+.icon-permissions:hover { color: #f57c00; }
+
+/* --- NOVOS ESTILOS PARA O ÍCONE DE SENHA --- */
+
+/* Wrapper para o input de senha no formulário de "Gerenciar Usuários Filho" */
+.password-input-wrapper-redesign {
+  position: relative;
+  /* Garante que o wrapper ocupe o espaço no grid */
+  display: flex;
+}
+
+/* O input dentro do wrapper ocupa 100% do espaço */
+.password-input-wrapper-redesign input {
+  width: 100%;
+  padding-right: 2.5rem; /* Adiciona espaço para o ícone */
+}
+
+/* O ícone de olho */
+.password-toggle-icon-redesign {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem; /* Posição dentro do input */
+  transform: translateY(-50%);
+  color: #6C757D;
+  cursor: pointer;
+}
+/* --------------------------------- */
+
+@media (max-width: 768px) {
+  .conta-grid-container{
+    display: grid;
+    grid-template-columns: 1fr;
+
+  }
+
+  .conta-card{
+    max-width: 78%;
+  }
+
+  .child-user-add-form,
+  .unidade-add-form{
+    display: block;
+  }
+
+  #nome-unidade{
+    margin-bottom: 2rem;
+  }
+
+
+}
+

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=forno_user
+      - POSTGRES_PASSWORD=forno_pass
+      - POSTGRES_DB=sabio_forno
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
+    name: sabio-forno-db

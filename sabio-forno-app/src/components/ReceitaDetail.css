@@ -1,0 +1,217 @@
+/* Local: src/components/ReceitaDetail.css */
+
+/* Estilo do Card (movido de ReceitasPage.css) */
+.receita-detail-redesign {
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+}
+
+.receita-detail-placeholder-redesign {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6C757D;
+  font-size: 1.1rem;
+}
+
+.receita-title-redesign {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #343A40;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.receita-stat-card-redesign {
+  background-color: #FFF; /* Fundo branco interno */
+  border: 1px solid #E9ECEF;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #4f4d45;
+}
+
+.receita-stat-card-redesign h4 {
+  margin: 0 0 0.5rem 0;
+  color: #495057;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.receita-stat-card-redesign span {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.section-title-redesign {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343A40;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+
+}
+
+.ingredientes-table-redesign {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background-color: #FFF; /* Fundo branco para a tabela */
+  border-radius: 8px;
+  border: 1px solid #E9ECEF;
+  overflow: hidden; /* Para o border-radius funcionar */
+}
+
+.ingredientes-table-redesign th,
+.ingredientes-table-redesign td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #E9ECEF;
+  color: #495057;
+}
+
+.ingredientes-table-redesign th {
+  background-color: #f1f3f5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6C757D;
+}
+.ingredientes-table-redesign tr:last-child td {
+  border-bottom: none;
+}
+
+/* CORREÇÃO: Grid de Preços alterado para flex vertical (empilhado) */
+.pricing-grid-redesign {
+  display: flex;
+  flex-direction: column; /* Empilha os cards */
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.pricing-box-redesign {
+  background-color: #FFF; /* Fundo branco interno */
+  border: 1px solid #E9ECEF;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+
+.pricing-box-redesign span {
+  display: block;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.pricing-box-redesign strong {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #107ce8;
+}
+
+.pricing-box-redesign.ideal-price-redesign strong {
+  color: #28A745;
+}
+
+.variation-box-redesign {
+  background-color: #FFFBEB;
+  border: 1px solid #FEEB9A;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.5rem; /* Mantém o espaçamento */
+  text-align: center;
+}
+
+.variation-box-redesign span {
+  display: block;
+  color: #5D4037;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.variation-box-redesign strong {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4E342E;
+}
+
+.action-buttons-container-redesign {
+  margin-top: 2rem;
+  border-top: 1px solid #E9ECEF;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.edit-button-redesign,
+.delete-button-redesign {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-button-redesign {
+  background-color: #a05353;
+  color: white;
+}
+.edit-button-redesign:hover { background-color: #a05353e0; }
+
+.delete-button-redesign {
+  background-color: #FFF;
+  color: #c62828;
+  border: 1px solid #CED4DA;
+}
+.delete-button-redesign:hover {
+  background-color: #E9ECEF;
+}
+
+/* Adicione no final de src/components/ReceitaDetail.css */
+.export-button-redesign {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #1e88e5; /* Azul */
+  background-color: #FFF;
+  color: #1e88e5;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.export-button-redesign:hover {
+  background-color: #e3f2fd; /* Azul bem claro */
+}
+
+@media (max-width: 768px) {
+
+  .action-buttons-container-redesign{
+    display: inline-block;
+    text-align: center;
+  }
+
+  .export-button-redesign,
+  .edit-button-redesign,
+  .delete-button-redesign{
+    margin-top: 1.5rem;
+    width: 100%;
+    height: 3.2rem;
+    justify-content: center;
+  }
+}

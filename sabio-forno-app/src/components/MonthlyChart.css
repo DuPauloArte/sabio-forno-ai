@@ -1,0 +1,27 @@
+/* Local: sabio-forno-app/src/components/MonthlyChart.css */
+.chart-card-redesign {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+  /* Ocupa o espaço de 2 colunas */
+  grid-column: span 2; 
+}
+
+.chart-container {
+  position: relative;
+  height: 350px; /* Altura fixa para o gráfico */
+}
+
+.mobile-warning{
+    display: none;
+  }
+
+@media (max-width: 992px) {
+  .mobile-warning{
+    display: flex;
+    text-align: center;
+    color: #a3a3a3;
+    font-family: 'Urbanist', sans-serif;
+  }
+}

@@ -1,0 +1,77 @@
+/* Local: src/components/EditChildUserModal.css */
+.edit-child-user-content .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.edit-child-user-content label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.edit-child-user-content input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.edit-child-user-content h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+.edit-child-user-content .divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 1.5rem 0;
+}
+.edit-child-user-content .error-message {
+    color: #c62828;
+    font-weight: 500;
+    margin-top: 1rem;
+    text-align: center;
+}
+/* Reutiliza estilos do PermissionsModal para os botões */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+.modal-actions .save-button,
+.modal-actions .cancel-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.modal-actions .save-button {
+    background-color: #43a047; /* Ou a cor de salvar que preferir */
+    color: white;
+    border: none;
+}
+.modal-actions .cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+/* --- NOVOS ESTILOS PARA O ÍCONE --- */
+.password-input-wrapper-modal {
+  position: relative;
+  display: flex;
+}
+.password-input-wrapper-modal input {
+  width: 100%;
+  padding-right: 2.5rem; /* Espaço para o ícone */
+}
+.password-toggle-icon-modal {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: #6C757D;
+  cursor: pointer;
+}
+/* --------------------------------- */

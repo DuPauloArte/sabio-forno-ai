@@ -1,0 +1,31 @@
+/* Local: sabio-forno-app/src/components/EmptyState.css */
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.empty-state-icon {
+  color: #ADB5BD; /* Cinza sutil do design */
+  margin-bottom: 1rem;
+}
+
+.empty-state-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+  margin: 0 0 0.25rem 0;
+}
+
+.empty-state-message {
+  font-size: 0.95rem;
+  color: #6C757D;
+  margin: 0;
+  line-height: 1.5;
+}

@@ -1,0 +1,150 @@
+/* Local: sabio-forno-app/src/pages/LoginPage.css */
+
+/* Define o layout da página inteira */
+.login-page-redesign {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8f9fa; /* Fundo cinza claro para a área direita */
+}
+
+.logreg-logo{
+  max-width: 250px;
+  align-items: center;
+  padding-left: 50px;
+  padding-bottom: 50px;
+}
+
+/* O painel branco da esquerda */
+.login-panel {
+  width: 450px; /* Largura do painel de login */
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.05); /* Sombra sutil à direita */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* O container do formulário dentro do painel */
+.login-container-redesign {
+  width: 100%;
+  max-width: 350px;
+  text-align: left; /* Alinha o texto do formulário à esquerda */
+}
+
+/* Logo "SÁBIO FORNO" */
+.login-container-redesign h1 {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6D4C41; /* Cor marrom escura */
+  text-align: center; /* O logo é centralizado */
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Subtítulo */
+.login-container-redesign p {
+  text-align: center;
+  color: #6C757D;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+}
+
+/* Grupos de formulário */
+.login-container-redesign .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  /* Adiciona espaço à direita para o ícone não sobrepor o texto */
+  padding-right: 2.5rem; 
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  color: #6C757D;
+  cursor: pointer;
+}
+/* --------------------------------- */
+
+.login-container-redesign .form-group label {
+  display: block;
+  margin-top: 30px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+/* Novo estilo de input (minimalista) */
+.login-container-redesign .form-group input {
+  width: 100%;
+  padding: 0.5rem 0.5rem; /* Mais padding vertical, menos horizontal */
+  border: none; /* Remove todas as bordas */
+  border-bottom: 2px solid #E9ECEF; /* Apenas borda inferior */
+  border-radius: 0; /* Remove bordas arredondadas */
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: transparent; /* Fundo transparente */
+  transition: border-color 0.2s;
+}
+
+.login-container-redesign .form-group input:focus {
+  outline: none;
+  border-bottom-color: #a05353; /* Cor de foco */
+}
+
+/* Botão de Entrar */
+.login-container-redesign .login-button {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  background-color: #a05353; /* Cor marrom escura */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.login-container-redesign .login-button:hover {
+  background-color: #5D4037;
+}
+
+.login-container-redesign .login-button:disabled {
+  background-color: #a1887f;
+  cursor: not-allowed;
+}
+
+/* Mensagem de erro */
+.error-message {
+  color: #c62828;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Texto "Não tem uma conta?" */
+.sub-text {
+  margin-top: 1.5rem;
+  color: #555;
+  text-align: center;
+}
+
+.sub-text a {
+  color: #a05353;
+  font-weight: 600;
+  text-decoration: none;
+}

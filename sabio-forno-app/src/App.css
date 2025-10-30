@@ -1,0 +1,34 @@
+/* Local: sabio-forno-app/src/App.css */
+
+/* Container principal que alinha Sidebar e o resto */
+.app-container-redesign {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #ffffff; /* Fundo branco principal */
+}
+
+/* Container para a área à direita da Sidebar (Header + Conteúdo) */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  height: 100vh; /* Garante altura total */
+}
+
+/* Área de conteúdo principal rolável */
+.main-content-redesign {
+  flex-grow: 1;
+  padding: 2.5rem; /* Padding padrão para desktop */
+  overflow-y: auto; /* Permite scroll apenas nesta área */
+  background-color: #ffffff;
+  transition: padding 0.3s ease-in-out; /* Transição suave */
+}
+/* --- NOVO: MEDIA QUERY PARA TELAS PEQUENAS --- */
+@media (max-width: 768px) {
+  .main-content-redesign {
+    padding: 1rem; /* Padding reduzido para mobile */
+  }
+}

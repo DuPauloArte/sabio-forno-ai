@@ -1,0 +1,111 @@
+/* Local: src/components/InsumoForm.css */
+
+.form-card-redesign {
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+  margin-bottom: 2rem;
+  border: none;
+}
+
+.form-title-redesign {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343A40;
+}
+
+/* Grid de 3 colunas para o formulário */
+.form-grid-redesign {
+  display: grid;
+  /* Desktop: 3 colunas */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group-redesign {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-redesign label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.form-group-redesign input,
+.form-group-redesign select,
+.form-group-redesign .currency-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #CED4DA;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  background-color: #FFF;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form-group-redesign input:focus,
+.form-group-redesign select:focus,
+.form-group-redesign .currency-input:focus {
+  outline: none;
+  border-color: #a05353;
+  box-shadow: 0 0 0 2px rgba(160, 83, 83, 0.2);
+}
+
+.form-actions-redesign {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-button-redesign,
+.form-button-cancel-redesign {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #a05353;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-button-redesign:hover {
+  background-color: #5D4037;
+}
+
+.form-button-cancel-redesign {
+  background-color: #FFF;
+  color: #495057;
+  border: 1px solid #CED4DA;
+}
+
+.form-button-cancel-redesign:hover {
+  background-color: #E9ECEF;
+}
+
+/* --- NOVO: MEDIA QUERY PARA O GRID DO FORMULÁRIO --- */
+@media (max-width: 768px) {
+  .form-grid-redesign {
+    /* Mobile: 1 coluna */
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions-redesign {
+    flex-direction: column; /* Botões empilhados */
+  }
+  
+  .form-button-redesign,
+  .form-button-cancel-redesign {
+    width: 100%; /* Botões ocupam 100% da largura */
+  }
+}

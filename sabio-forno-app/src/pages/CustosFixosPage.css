@@ -1,0 +1,179 @@
+/* Local: src/pages/CustosFixosPage.css */
+
+/* Layout dos controles do topo (Mês e Total) */
+.custos-top-controls {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Coluna do mês maior que a do total */
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo do Card (reutilizado de outros componentes) */
+.control-card {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+  text-align: -webkit-center;
+}
+
+.control-card label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+/* Seletor de Mês */
+.month-selector-redesign {
+  display: flex;
+  max-width: 500px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFF;
+  border: 1px solid #CED4DA;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+.month-selector-redesign .month-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #343A40;
+}
+
+.month-selector-redesign .month-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6D4C41;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+.month-selector-redesign .month-arrow:hover {
+  background-color: #f1f3f5;
+}
+
+/* Card de Resumo (Total) */
+.summary-card-redesign {
+  text-align: center;
+}
+
+.summary-card-redesign .total-value-redesign {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #212529;
+  line-height: 1.2;
+}
+
+/* Card da Tabela */
+.custos-table-card {
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+}
+
+.section-title-redesign {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343A40;
+}
+
+/* Tabela de Custos */
+.custos-table-redesign {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custos-table-redesign th,
+.custos-table-redesign td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #E9ECEF;
+  color: #495057;
+}
+
+.custos-table-redesign th {
+  background-color: #f9f9f9;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6C757D;
+  border-bottom-width: 2px;
+  border-color: #E9ECEF;
+}
+
+.custos-table-redesign tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status (Pago/Pendente) */
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+}
+.status.pendente { background-color: #f57c00; } /* Laranja */
+.status.pago { background-color: #388e3c; } /* Verde */
+
+/* Estado Vazio */
+.table-empty-state {
+  text-align: center !important;
+  font-style: italic;
+  color: #6C757D;
+  padding: 2rem !important;
+}
+
+/* Adicione no final de src/pages/CustosFixosPage.css */
+.export-button-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* .export-button-container .control-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem; /* Tamanho maior que os botões do caixa 
+}*/
+
+.export-button-container{
+  justify-content: center;
+  padding-top: 1.5rem;
+}
+
+
+@media (max-width: 768px) {
+
+  .custos-top-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+  .status-off-mobile{
+    display: none;
+  }
+
+  .custos-table-redesign{
+    display: grid;
+    justify-content: center;
+  }
+
+  .custos-table-redesign th{
+    font-size: 0.8rem;
+  }
+
+  .custos-table-redesign th, .custos-table-redesign td{
+    padding:0.9rem;
+  }
+}

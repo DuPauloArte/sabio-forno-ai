@@ -1,0 +1,35 @@
+/* Local: sabio-forno-app/src/components/LoadingSpinner.css */
+
+.loading-spinner-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem; /* Bastante espaço */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.loading-icon {
+  color: #a05353; /* Cor do Header */
+  
+  /* Animação de rotação */
+  animation: spin 1s linear infinite; 
+}
+
+.loading-spinner-overlay p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6C757D;
+  margin-top: 1rem;
+}
+
+/* Definição da animação de rotação */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,90 @@
+/* Local: src/components/ReceitaList.css */
+
+/* Estilo do Card */
+.list-card-redesign {
+  background-color: #f9f9f9;
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+}
+
+.list-title-redesign {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343A40;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+/* Estilos da Barra de Busca */
+.search-bar-redesign-receita {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+.search-input-redesign {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.25rem;
+  border: 1px solid #CED4DA;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: 'Urbanist', sans-serif;
+  box-sizing: border-box;
+  background-color: #FFF;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input-redesign:focus {
+  outline: none;
+  border-color: #a05353;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.search-icon-redesign {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ADB5BD;
+}
+
+/* Lista de Receitas */
+.receita-list-redesign {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.receita-list-redesign li {
+  padding: 0.9rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #495057;
+  transition: background-color 0.2s, color 0.2s;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+/* Item de lista normal (não o empty state) */
+.receita-list-redesign li:not(.list-empty-state-wrapper):hover {
+  background-color: #E9ECEF;
+}
+
+.receita-list-redesign li.active {
+  background-color: #a05353;
+  color: white;
+  font-weight: 600;
+}
+
+/* --- CORREÇÃO AQUI --- */
+/* O <li> que 'envelopa' o EmptyState */
+/* Remove todos os estilos que podem conflitar (padding, cursor, etc.) */
+.receita-list-redesign li.list-empty-state-wrapper {
+  padding: 1rem; /* Mantém um padding, mas sem outros estilos */
+  cursor: default;
+  margin-bottom: 0;
+  text-align: center;
+}

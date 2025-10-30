@@ -1,0 +1,90 @@
+/* Local: src/components/Header.css */
+
+.app-header-corrected {
+  background-color: #a05353;
+  color: #FFFFFF;
+  padding: 0 1.5rem; /* Padding reduzido para mobile */
+  height: 50px;
+  display: flex;
+  justify-content: space-between; /* Alterado para space-between */
+  align-items: center;
+  border-bottom: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  z-index: 10;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* --- NOVO BOTÃO HAMBÚRGUER --- */
+.mobile-menu-button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  margin-left: -0.5rem; /* Alinha melhor com a borda */
+  cursor: pointer;
+  display: none; /* Escondido por padrão */
+}
+/* ----------------------------- */
+
+.header-unidade-section {
+  display: flex;
+  align-items: center;
+}
+
+.unidade-selector-corrected, .unidade-display-corrected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.unidade-selector-corrected label, .unidade-display-corrected span {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.unidade-selector-corrected {
+  position: relative;
+  min-width: 150px; /* Reduzido para caber melhor */
+}
+
+.unidade-selector-corrected select {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.25rem 2rem 0.25rem 0.5rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+
+.unidade-selector-corrected select option {
+  color: #333;
+  background-color: #FFF;
+}
+
+.unidade-selector-icon-corrected {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* --- MEDIA QUERY PARA RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .app-header-corrected {
+    /* No mobile, alinha o botão na esquerda e o seletor na direita */
+    justify-content: space-between;
+  }
+  
+  .mobile-menu-button {
+    display: block; /* Mostra o botão hambúrguer */
+  }
+}

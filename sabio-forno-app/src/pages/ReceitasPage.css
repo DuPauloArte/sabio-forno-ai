@@ -1,0 +1,46 @@
+/* Local: src/pages/ReceitasPage.css */
+
+.receitas-page-container-redesign {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+  align-items: flex-start; 
+}
+
+/* Coluna da Lista (Esquerda) */
+.list-column-redesign {
+  width: 400px;
+  min-width: 250px;
+  flex-shrink: 0;
+}
+
+/* Coluna de Detalhes (Centro) */
+.detail-column-redesign {
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* Coluna do Formulário (Direita) */
+.form-column-redesign {
+  width: 380px;
+  min-width: 450px;
+  flex-shrink: 0;
+}
+
+/* --- NOVO: MEDIA QUERY PARA RESPONSIVIDADE --- */
+/* Para tablets e celulares (ex: < 992px) */
+@media (max-width: 992px) {
+  .receitas-page-container-redesign {
+    flex-direction: column; /* Empilha as colunas */
+  }
+
+  /* Faz todas as colunas ocuparem 100% da largura */
+  .list-column-redesign,
+  .detail-column-redesign,
+  .form-column-redesign {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+  }
+}

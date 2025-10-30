@@ -1,0 +1,22 @@
+# Ignora todas as pastas de dependências
+**/node_modules
+
+# Ignora todas as pastas de build
+**/dist
+**/build
+
+# Ignora arquivos de ambiente (MUITO IMPORTANTE)
+# Isso impede que suas senhas de API e Banco de Dados sejam enviadas!
+.env
+.env.*
+*.env
+
+# Ignora logs de erro
+npm-debug.log*
+yarn-error.log
+
+# Arquivos de Sistema (Mac)
+.DS_Store
+
+# Arquivos de IDE (ex: VS Code)
+.vscode/

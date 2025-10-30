@@ -1,0 +1,154 @@
+// Local: sabio-forno-api/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Enumerações de Status e Planos ---
+enum UserRole {
+  PAI
+  FILHO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  PAGO
+}
+
+// NOVO: Status da Assinatura
+enum SubscriptionStatus {
+  ACTIVE    // Ativa, tudo certo
+  CANCELED  // Cancelada pelo usuário
+  PAST_DUE  // Pagamento atrasado
+  INCOMPLETE // Falha no primeiro pagamento
+  TRIALING  // Período de teste (opcional)
+}
+
+// --- ARQUITETURA DE ORGANIZAÇÃO E USUÁRIOS ---
+
+model Organization {
+  id       Int      @id @default(autoincrement())
+  name     String
+  users    User[]
+  unidades Unidade[]
+  insumos  Insumo[]
+
+  // --- NOVOS CAMPOS DE ASSINATURA ---
+  stripeCustomerId     String?             @unique // ID do cliente no Stripe
+  subscriptionId       String?             @unique // ID da assinatura ativa no Stripe
+  planType             String?             // "Pro", "Elite", "Master", "Imperial"
+  unidadeLimit         Int                 @default(1) // Limite de unidades (Pro começa com 1)
+  subscriptionStatus   SubscriptionStatus? // Status da assinatura
+  currentPeriodEnd     DateTime?           // Data de vencimento da fatura
+}
+
+model Unidade {
+  id                 Int               @id @default(autoincrement())
+  name               String
+  organizationId     Int
+  organization       Organization      @relation(fields: [organizationId], references: [id])
+  receitas           Receita[]
+  fechamentosCaixa   FechamentoCaixa[]
+  custosRegistrados  CustoRegistrado[]
+  usuariosFilho      User[]            @relation("UnidadesPermitidas")
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  role               UserRole @default(PAI)
+  email              String?  @unique
+  companyName        String?
+  username           String?  @unique
+  password           String
+  name               String
+  createdAt          DateTime @default(now())
+  organizationId     Int
+  organization       Organization @relation(fields: [organizationId], references: [id])
+  paiId              Int?
+  pai                User?    @relation("PaiFilho", fields: [paiId], references: [id])
+  filhos             User[]   @relation("PaiFilho")
+  unidadesPermitidas Unidade[] @relation("UnidadesPermitidas")
+  allowedPages       String[] @default([])
+}
+
+// --- MODELOS DE DADOS OPERACIONAIS (Sem alterações) ---
+
+model Insumo {
+  id                   Int      @id @default(autoincrement())
+  nome                 String
+  unidade_compra       String
+  valor_unidade_compra Decimal
+  receitas             ReceitaInsumo[]
+  organizationId       Int
+  organization         Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Receita {
+  id                 Int      @id @default(autoincrement())
+  nome               String
+  rendimento_porcoes Int?
+  lucro_desejado     Decimal
+  valor_praticado    Decimal  @default(0)
+  insumos            ReceitaInsumo[]
+  unidadeId          Int
+  unidade            Unidade  @relation(fields: [unidadeId], references: [id])
+}
+
+model ReceitaInsumo {
+  id               Int     @id @default(autoincrement())
+  quantidade_usada Decimal
+  medida_usada     String
+  receitaId        Int
+  insumoId         Int
+  receita          Receita @relation(fields: [receitaId], references: [id], onDelete: Cascade)
+  insumo           Insumo  @relation(fields: [insumoId], references: [id], onDelete: Cascade)
+}
+
+// --- MODELOS FINANCEIROS (Sem alterações) ---
+
+model CustoRegistrado {
+  id            Int             @id @default(autoincrement())
+  nome          String
+  mes           Int
+  ano           Int
+  valor         Decimal
+  status        StatusPagamento @default(PAGO)
+  dataPagamento DateTime        @db.Date
+  unidadeId     Int
+  unidade       Unidade         @relation(fields: [unidadeId], references: [id])
+}
+
+model FechamentoCaixa {
+  id                 Int             @id @default(autoincrement())
+  data               DateTime        @db.Date
+  vendasDinheiro     Decimal?
+  vendasCartao       Decimal?
+  trocoDiaSeguinte   Decimal?
+  pagamentos         Pagamento[]
+  unidadeId          Int
+  unidade            Unidade         @relation(fields: [unidadeId], references: [id])
+  despesasDiarias    DespesaDiaria[]
+  @@unique([unidadeId, data])
+}
+
+model DespesaDiaria {
+  id                Int             @id @default(autoincrement())
+  descricao         String
+  valor             Decimal
+  fechamentoCaixaId Int
+  fechamentoCaixa   FechamentoCaixa @relation(fields: [fechamentoCaixaId], references: [id], onDelete: Cascade)
+}
+
+model Pagamento {
+  id                Int             @id @default(autoincrement())
+  descricao         String
+  valor             Decimal
+  data              DateTime        @db.Date
+  fechamentoCaixaId Int
+  fechamentoCaixa   FechamentoCaixa @relation(fields: [fechamentoCaixaId], references: [id], onDelete: Cascade)
+}

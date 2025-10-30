@@ -1,0 +1,62 @@
+/* Local: src/components/PermissionsModal.css */
+.permissions-modal-content h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+.unit-checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 4px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+.modal-actions .save-button,
+.modal-actions .cancel-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.modal-actions .save-button {
+  background-color: #43a047;
+  color: white;
+  border: none;
+}
+.modal-actions .cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+/* Adicione no final de src/components/PermissionsModal.css */
+.page-checkbox-list { /* Similar a unit-checkbox-list */
+  display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;
+}
+.checkbox-item.disabled label {
+  color: #999;
+  font-style: italic;
+}
+.divider {
+  border: none; border-top: 1px solid #eee; margin: 1.5rem 0;
+}

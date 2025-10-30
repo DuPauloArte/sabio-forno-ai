@@ -1,0 +1,146 @@
+/* Local: sabio-forno-app/src/pages/PlanosPage.css */
+
+.planos-grid-container {
+  display: grid;
+  /* Cria 4 colunas que se adaptam */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.plano-card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.plano-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do plano "Imperial" (Sob Consulta) */
+.plano-card.imperial {
+  background-color: #6D4C41; /* Cor Marrom Escura */
+  color: white;
+}
+
+.plano-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #E9ECEF;
+}
+
+.plano-card.imperial .plano-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.plano-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343A40;
+  margin: 0 0 0.5rem 0;
+}
+.plano-card.imperial .plano-name {
+  color: white;
+}
+
+.plano-price {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #a05353; /* Cor do Header */
+  margin: 0.5rem 0;
+}
+.plano-card.imperial .plano-price {
+  color: #e6e0d4; /* Cor da Sidebar */
+  font-size: 1.75rem; /* Menor para "Sob Consulta" */
+}
+.plano-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6C757D;
+  margin-left: 0.25rem;
+}
+.plano-card.imperial .plano-price span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.plano-description {
+  font-size: 0.95rem;
+  color: #6C757D;
+  margin: 0;
+}
+.plano-card.imperial .plano-description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Lista de features */
+.plano-features {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
+  flex-grow: 1; /* Empurra o footer para baixo */
+}
+
+.plano-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.plano-features li.included {
+  color: #343A40;
+}
+.plano-features li.included svg {
+  color: #28A745; /* Verde */
+}
+
+.plano-features li.excluded {
+  color: #ADB5BD; /* Cinza claro */
+  text-decoration: line-through;
+}
+.plano-features li.excluded svg {
+  color: #DC3545; /* Vermelho */
+}
+
+.plano-card.imperial .plano-features li {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Rodapé com o botão */
+.plano-footer {
+  padding: 1.5rem;
+}
+
+.plano-button {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  background-color: #8d9e67; /* Verde oliva */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.plano-button:hover {
+  background-color: #7a8a59;
+}
+.plano-button:disabled {
+  background-color: #aeb89a;
+  cursor: not-allowed;
+}
+
+/* Botão do plano Imperial */
+.plano-card.imperial .plano-button {
+  background-color: #e6e0d4; /* Cor da Sidebar */
+  color: #4E342E; /* Cor do texto da Sidebar */
+}
+.plano-card.imperial .plano-button:hover {
+  background-color: #d7ccc8;
+}

@@ -1,0 +1,181 @@
+/* Local: src/components/Sidebar.css */
+
+.sidebar-redesign-corrected {
+  min-width: 250px;
+  width: 250px;
+  height: 100vh;
+  background-color: #e6e0d4;
+  display: flex;
+  flex-direction: column;
+  color: #4E342E;
+  border-right: none;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  z-index: 30;
+}
+
+/* Seção Logo */
+.sidebar-logo-section {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px; /* Mantém a altura para alinhar com o Header */
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(78, 52, 46, 0.1);
+}
+
+.sidebar-logo{
+  max-width: 190px;
+  margin-bottom: 2.5rem;
+  padding-top: 2.5rem;
+}
+
+.sidebar-logo-text {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #4E342E;
+}
+
+/* Seção Saudação */
+.sidebar-greeting-section {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  text-align: center;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(78, 52, 46, 0.1);
+}
+
+.sidebar-greeting-section span {
+  display: block;
+  color: #5D4037;
+  font-size: 0.95rem;
+}
+
+.sidebar-greeting-section .company-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #4E342E;
+}
+
+/* Menu Principal */
+.sidebar-menu-redesign {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1; /* Permite que o menu ocupe o espaço restante, empurrando o footer */
+}
+
+.sidebar-menu-redesign li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #5D4037;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: background-color 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.sidebar-menu-redesign li a:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.sidebar-menu-redesign li a.active {
+  background-color: #d7ccc8;
+  color: #4E342E;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Rodapé - CORRIGIDO PARA O NOVO DESIGN (SIDE-BY-SIDE) */
+.sidebar-footer-redesign-corrected {
+  margin-top: auto; /* Garante que fique no fundo */
+  padding: 1.5rem;
+  display: block;
+  justify-items: center;
+  flex-direction: column; /* Itens lado a lado */
+  justify-content: center; /* Espaço entre eles */
+  align-items: center;
+  border-top: 1px solid rgba(78, 52, 46, 0.1);
+  gap: 1rem; /* Espaçamento entre os botões */
+}
+
+.account-link-redesign, .logout-button-redesign {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza ícone e texto */
+  gap: 0.5rem; /* Menor gap para caber melhor */
+  flex-grow: 1; /* Cada botão ocupa metade do espaço */
+  padding: 0.4rem 0.3rem; /* Padding ajustado */
+  border-radius: 6px;
+  text-decoration: none;
+  color: #5D4037;
+  font-weight: 500;
+  font-size: 0.9rem; /* Fonte ligeiramente menor */
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+  white-space: nowrap; /* Evita que o texto quebre */
+}
+
+.account-link-redesign:hover, .logout-button-redesign:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.account-link-redesign.active {
+  background-color: #FFFFFF;
+  font-weight: 600;
+}
+
+.logout-button-redesign {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+}
+
+.bot-icons{
+  stroke: #a05353;
+}
+
+/* --- NOVAS REGRAS PARA RESPONSIVIDADE --- */
+
+/* O fundo escuro que cobre a tela */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 25; /* Abaixo da sidebar, acima do conteúdo */
+  display: none; /* Escondido por padrão */
+}
+
+@media (max-width: 768px) {
+  .sidebar-redesign-corrected {
+    /* Esconde a sidebar fora da tela por padrão no mobile */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    /* Garante que ocupe a tela se a largura for menor */
+    width: 80%;
+    max-width: 280px; 
+  }
+
+  /* Classe 'open' que o AppContext adiciona */
+  .sidebar-redesign-corrected.open {
+    transform: translateX(0%); /* Traz a sidebar para a tela */
+  }
+
+  /* Mostra o backdrop quando a sidebar estiver aberta */
+  .sidebar-backdrop {
+    display: block;
+  }
+}
