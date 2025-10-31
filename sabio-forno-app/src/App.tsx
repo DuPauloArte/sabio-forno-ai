@@ -1,6 +1,6 @@
 // Local: sabio-forno-app/src/App.tsx
 
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
 import './App.css'; // Importa o CSS de layout
 import { useAppContext } from './contexts/AppContext';
 import { useEffect } from 'react';
@@ -20,8 +20,6 @@ import { CustosFixosPage } from './pages/CustosFixosPage';
 import { MinhaContaPage } from './pages/MinhaContaPage';
 import { CustosOperacionaisPage } from './pages/CustosOperacionaisPage';
 import { PlanosPage } from './pages/PlanosPage';
-
-// --- NOVAS PÁGINAS DE PAGAMENTO ---
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage';
 import { PaymentCancelPage } from './pages/PaymentCancelPage';
 
@@ -61,9 +59,20 @@ function ProtectedRoutes() {
   // 2. Verificação de Paywall
   const isPai = user.role === 'PAI';
   const isSubscribed = user.subscriptionStatus === 'ACTIVE';
-  const isManagingSubscription = 
-    location.pathname.startsWith('/planos') || 
-    location.pathname.startsWith('/conta');
+  
+  // --- CORREÇÃO CRÍTICA AQUI ---
+  // Define as páginas que um PAI *não assinante* PODE acessar
+  const allowedSubscriptionPages = [
+    '/planos',
+    '/conta',
+    '/payment/success', // <-- Adiciona a página de sucesso
+    '/payment/cancel',  // <-- Adiciona a página de cancelamento
+  ];
+
+  const isManagingSubscription = allowedSubscriptionPages.some(path => 
+    location.pathname.startsWith(path)
+  );
+  // --- FIM DA CORREÇÃO ---
 
   if (isPai && !isSubscribed && !isManagingSubscription) {
     return <Navigate to="/planos" replace />;
@@ -90,22 +99,8 @@ function ProtectedRoutes() {
         <Header />
         <main className="main-content-redesign">
           {isAllowed ? (
-            // 5. Se tiver permissão, renderiza o <Routes> interno com as páginas
-            <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/insumos" element={<InsumosPage />} />
-              <Route path="/receitas" element={<ReceitasPage />} />
-              <Route path="/caixa" element={<FluxoCaixaPage />} />
-              <Route path="/custos" element={<CustosFixosPage />} />
-              <Route path="/custos-operacionais" element={<CustosOperacionaisPage />} />
-              <Route path="/conta" element={<MinhaContaPage />} />
-              <Route path="/planos" element={<PlanosPage />} />
-              <Route path="/" element={<IndexRedirect />} />
-              <Route path="*" element={<h1>Página Protegida Não Encontrada</h1>} />
-              {/* --- NOVAS ROTAS DE PAGAMENTO (são protegidas) --- */}
-              <Route path="payment/success" element={<PaymentSuccessPage />} />
-          <Route path="payment/cancel" element={<PaymentCancelPage />} />
-            </Routes>
+            // 5. Se tiver permissão, renderiza o <Outlet> (que o App.tsx vai preencher)
+            <Outlet />
           ) : (
             // 6. Se não tiver permissão, redireciona para uma página segura
             <Navigate to={user.role === 'FILHO' ? "/caixa" : "/dashboard"} replace />
@@ -132,22 +127,32 @@ function IndexRedirect() {
  * Componente Principal
  */
 function App() {
+  const { user } = useAppContext();
+
   return (
     <Routes>
-      {/* CORREÇÃO AQUI:
-        Não usamos mais um 'PublicLayout'. A lógica é simples:
-        Se a rota for /login ou /register, renderiza a página.
-        O componente <ProtectedRoutes> já lida com o redirecionamento
-        se o usuário tentar acessar /* estando logado.
-      */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+      {/* --- Rotas Públicas --- */}
+      {/* Se o usuário estiver logado, redireciona para a home, senão mostra a página */}
+      <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage />} />
+      <Route path="/register" element={user ? <Navigate to="/" /> : <RegisterPage />} />
 
-      {/* Qualquer outra rota (/*) é tratada pelo nosso "Guardião" 
-        ProtectedRoutes. Ele decidirá se mostra a página ou
-        redireciona para /login.
-      */}
-      <Route path="/*" element={<ProtectedRoutes />} />
+      {/* --- Rotas Protegidas --- */}
+      {/* Qualquer outra rota (/*) é tratada pelo "Guardião" ProtectedRoutes */}
+      <Route path="/*" element={<ProtectedRoutes />}>
+        {/* O <Outlet> no ProtectedRoutes vai renderizar estas rotas filhas: */}
+        <Route index element={<IndexRedirect />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="insumos" element={<InsumosPage />} />
+        <Route path="receitas" element={<ReceitasPage />} />
+        <Route path="caixa" element={<FluxoCaixaPage />} />
+        <Route path="custos" element={<CustosFixosPage />} />
+        <Route path="custos-operacionais" element={<CustosOperacionaisPage />} />
+        <Route path="conta" element={<MinhaContaPage />} />
+        <Route path="planos" element={<PlanosPage />} />
+        <Route path="payment/success" element={<PaymentSuccessPage />} />
+        <Route path="payment/cancel" element={<PaymentCancelPage />} />
+        <Route path="*" element={<h1>Página Protegida Não Encontrada</h1>} />
+      </Route>
     </Routes>
   );
 }

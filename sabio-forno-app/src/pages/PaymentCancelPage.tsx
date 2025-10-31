@@ -8,10 +8,13 @@ export function PaymentCancelPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Exibe uma notificação de erro/aviso
     toast.error("Pagamento cancelado. Você pode tentar novamente a qualquer momento.");
+    
+    // Redireciona o usuário de volta para a página de planos
     navigate('/planos');
   }, [navigate]);
 
-  // Renderiza null pois será redirecionado imediatamente
+  // Esta página não renderiza nada, pois ela apenas redireciona
   return null;
 }

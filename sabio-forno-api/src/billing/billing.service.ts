@@ -25,11 +25,14 @@ export class BillingService {
       throw new Error('Chave secreta do Stripe (STRIPE_API_KEY) não foi definida.');
     }
     this.stripe = new Stripe(apiKey, {
-      apiVersion: '2025-09-30.clover', // Usando a sua versão especificada
+      apiVersion: '2025-09-30.clover', // Sua versão de API especificada
     });
   }
 
-  // Função para mapear o plano do Stripe para o limite de unidades
+  // --- FUNÇÃO QUE FALTAVA (Erro 1) ---
+  /**
+   * Mapeia nosso nome de plano para o limite de unidades.
+   */
   private getPlanLimit(planType: string): number {
     switch (planType) {
       case 'Pro':
@@ -43,15 +46,19 @@ export class BillingService {
     }
   }
 
-  // Função para IDs de Preço (você já tem)
+  /**
+   * Mapeia nossos nomes de planos para os Price IDs do Stripe.
+   */
   private getStripePriceId(planType: 'Pro' | 'Elite' | 'Master'): string {
     const priceMap = {
-      Pro: 'price_1SNL3DKAru1nTE6YrB75mFZV',
-      Elite: 'price_1SNL4CKAru1nTE6Ygwhb0kFz',
-      Master: 'price_1SNL5mKAru1nTE6YvbzIJLR6',
+      Pro: process.env.STRIPE_PRO_PRICE_ID || 'price_1SNL3DKAru1nTE6YrB75mFZV',
+      Elite: process.env.STRIPE_ELITE_PRICE_ID || 'price_1SNL4CKAru1nTE6Ygwhb0kFz',
+      Master: process.env.STRIPE_MASTER_PRICE_ID || 'price_1SNL5mKAru1nTE6YvbzIJLR6',
     };
-    if (!priceMap[planType]) {
-      throw new InternalServerErrorException('Price ID do plano não configurado.');
+    if (!priceMap[planType] || !priceMap[planType].startsWith('price_')) {
+      throw new InternalServerErrorException(
+        `Price ID do plano "${planType}" não configurado ou é inválido.`
+      );
     }
     return priceMap[planType];
   }
@@ -61,27 +68,20 @@ export class BillingService {
    */
   async createCheckoutSession(user: AuthUser, planType: 'Pro' | 'Elite' | 'Master') {
     const { orgId, email, name } = user;
-
     const organization = await this.prisma.organization.findUnique({
       where: { id: orgId },
     });
-
     if (!organization) {
       throw new InternalServerErrorException('Organização não encontrada.');
     }
-
     let stripeCustomerId = organization.stripeCustomerId;
-
     if (!stripeCustomerId) {
       const customer = await this.stripe.customers.create({
         email: email,
         name: name,
-        metadata: {
-          orgId: organization.id,
-        },
+        metadata: { orgId: organization.id.toString() },
       });
       stripeCustomerId = customer.id;
-
       await this.prisma.organization.update({
         where: { id: orgId },
         data: { stripeCustomerId: stripeCustomerId },
@@ -97,27 +97,32 @@ export class BillingService {
       customer: stripeCustomerId,
       payment_method_types: ['card', 'boleto'],
       mode: 'subscription',
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: priceId, quantity: 1 }],
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: {
-        orgId: orgId,
+        orgId: orgId.toString(),
         planType: planType,
-      }
+      },
+      subscription_data: {
+        trial_settings: {
+          end_behavior: {
+            missing_payment_method: 'cancel',
+          },
+        },
+      },
+      payment_method_collection: 'if_required',
     });
 
     if (!session.url) {
       throw new InternalServerErrorException('Erro ao criar sessão de checkout do Stripe.');
     }
-    
     return { url: session.url };
   }
 
+  /**
+   * Processa eventos recebidos do Stripe (Webhooks).
+   */
   async handleWebhookEvent(buffer: Buffer, signature: string) {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!webhookSecret) {
@@ -125,52 +130,64 @@ export class BillingService {
     }
 
     let event: Stripe.Event;
-
     try {
-      // Constrói e verifica o evento usando a assinatura
-      event = this.stripe.webhooks.constructEvent(
-        buffer,
-        signature,
-        webhookSecret,
-      );
+      event = this.stripe.webhooks.constructEvent(buffer, signature, webhookSecret);
     } catch (err) {
       console.error(`Erro ao verificar a assinatura do webhook: ${err.message}`);
       throw new InternalServerErrorException(`Webhook Error: ${err.message}`);
     }
 
-    // Processa o evento 'checkout.session.completed'
-    // Este é o evento que o Stripe envia quando um checkout (pagamento) é concluído.
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
+      
+      if (!session.subscription) {
+          throw new InternalServerErrorException('ID da Assinatura não encontrado no checkout.');
+      }
+      
+      // --- CORREÇÃO DE TIPO (Erro 2) ---
+      // Forçamos o tipo para Stripe.Subscription, que é o que a API retorna
+      const subscription = await this.stripe.subscriptions.retrieve(
+        session.subscription as string
+      ) as Stripe.Subscription; // Tipagem explícita
 
-      // Pega os metadados que salvamos durante a criação da sessão
       const orgId = session.metadata?.orgId;
       const planType = session.metadata?.planType;
-      const subscriptionId = session.subscription as string; // O ID da nova assinatura
       const stripeCustomerId = session.customer as string;
 
-      if (!orgId || !planType || !subscriptionId || !stripeCustomerId) {
+      if (!orgId || !planType || !stripeCustomerId) {
         throw new InternalServerErrorException('Metadados essenciais faltando no evento de checkout.');
       }
 
-      // Atualiza a Organização no nosso banco de dados
+      // --- Este é o bloco que você me enviou ---
       await this.prisma.organization.update({
-        where: { id: parseInt(orgId) },
-        data: {
-          stripeCustomerId: stripeCustomerId,
-          subscriptionId: subscriptionId,
-          planType: planType,
-          unidadeLimit: this.getPlanLimit(planType), // Define o limite de unidades
-          subscriptionStatus: SubscriptionStatus.ACTIVE, // MARCA COMO ATIVO
-          // A API do Stripe nos informa quando o período atual termina
-          currentPeriodEnd: new Date(session.expires_at * 1000), // Converte de timestamp
-        },
-      });
+  where: { id: parseInt(orgId) },
+  data: {
+    stripeCustomerId: stripeCustomerId,
+    subscriptionId: subscription.id,
+    planType: planType,
+    unidadeLimit: this.getPlanLimit(planType),
+    subscriptionStatus: SubscriptionStatus.ACTIVE,
+    currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+  },
+});
     }
-    
-    // Outros eventos (ex: 'customer.subscription.deleted' ou 'customer.subscription.updated')
-    // seriam tratados aqui para lidar com cancelamentos ou inadimplência.
-    // Por enquanto, o 'completed' é o mais importante.
+
+    if (event.type === 'customer.subscription.updated') {
+        const subscription = event.data.object as Stripe.Subscription;
+        if (subscription.status === 'past_due' || subscription.status === 'canceled') {
+            const org = await this.prisma.organization.findFirst({
+                where: { subscriptionId: subscription.id }
+            });
+            if (org) {
+                await this.prisma.organization.update({
+                    where: { id: org.id },
+                    data: {
+                        subscriptionStatus: subscription.status === 'past_due' ? SubscriptionStatus.PAST_DUE : SubscriptionStatus.CANCELED
+                    }
+                });
+            }
+        }
+    }
 
     return { received: true };
   }

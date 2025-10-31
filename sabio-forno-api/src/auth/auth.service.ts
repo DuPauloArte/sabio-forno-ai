@@ -12,8 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-// CORREÇÃO: Importa os Enums 'Prisma', 'UserRole' e 'SubscriptionStatus'
-import { Prisma, UserRole, SubscriptionStatus } from '@prisma/client';
+import { Prisma, UserRole, SubscriptionStatus } from '@prisma/client'; // Garante que SubscriptionStatus está importado
 import { CreateChildUserDto } from './dto/create-child-user.dto';
 import { UpdatePermissionsDto } from './dto/update-permissions.dto';
 import { UpdateChildUserDto } from './dto/update-child-user.dto';
@@ -37,9 +36,9 @@ export class AuthService {
         const organization = await prisma.organization.create({
           data: {
             name: companyName,
-            planType: 'Pro',
-            unidadeLimit: 1,
-            subscriptionStatus: SubscriptionStatus.INCOMPLETE, // Usa o Enum
+            planType: 'Pro', // Padrão inicial
+            unidadeLimit: 1, // Padrão inicial
+            subscriptionStatus: SubscriptionStatus.INCOMPLETE, // Padrão inicial
           },
         });
         await prisma.unidade.create({ data: { name: 'Unidade Principal', organizationId: organization.id } });
@@ -143,16 +142,9 @@ export class AuthService {
 
   async findChildById(paiId: number, childId: number) {
     const child = await this.prisma.user.findFirst({
-      where: {
-        id: childId,
-        paiId: paiId,
-        role: UserRole.FILHO,
-      },
+      where: { id: childId, paiId: paiId, role: UserRole.FILHO },
       select: {
-        id: true,
-        username: true,
-        name: true,
-        createdAt: true,
+        id: true, username: true, name: true, createdAt: true,
         unidadesPermitidas: { select: { id: true, name: true } },
         allowedPages: true,
       },
@@ -163,11 +155,7 @@ export class AuthService {
     return child;
   }
 
-  async updateChildPermissions(
-    paiId: number,
-    childId: number,
-    updatePermissionsDto: UpdatePermissionsDto,
-  ) {
+  async updateChildPermissions(paiId: number, childId: number, updatePermissionsDto: UpdatePermissionsDto) {
     const child = await this.prisma.user.findFirst({
       where: { id: childId, paiId: paiId, role: UserRole.FILHO },
     });
@@ -188,11 +176,7 @@ export class AuthService {
     return this.findChildById(paiId, childId);
   }
 
-  async updateChildUser(
-    paiId: number,
-    childId: number,
-    updateChildUserDto: UpdateChildUserDto,
-  ) {
+  async updateChildUser(paiId: number, childId: number, updateChildUserDto: UpdateChildUserDto) {
     const child = await this.prisma.user.findFirst({
       where: { id: childId, paiId: paiId, role: UserRole.FILHO },
     });
@@ -225,13 +209,10 @@ export class AuthService {
     });
     return { message: 'Usuário filho deletado com sucesso.' };
   }
-
-  // --- FUNÇÃO "TROCador de Token" ---
-  async refreshTokenByStripeSession(userId: number, sessionId: string) {
-    if (!sessionId) {
-      throw new UnauthorizedException('ID da Sessão não fornecido.');
-    }
-    
+  
+  // --- NOVA FUNÇÃO DE ATUALIZAÇÃO DE TOKEN PÓS-PAGAMENTO ---
+  async refreshToken(userId: number) {
+    // 1. Busca o usuário e sua organização (que o webhook DEVE ter atualizado)
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: { organization: true },
@@ -241,17 +222,20 @@ export class AuthService {
       throw new InternalServerErrorException('Usuário ou Organização não encontrados.');
     }
 
-    // CORREÇÃO: Usa o Enum importado
+    // 2. Verifica se a assinatura está ATIVA
     if (user.organization.subscriptionStatus !== SubscriptionStatus.ACTIVE) {
-      // Se o webhook ainda não atualizou, retorna um erro
-      throw new NotFoundException('Assinatura ainda não está ativa. Aguardando confirmação do pagamento.');
+      // Isso pode acontecer se o webhook ainda não processou.
+      // Retorna um erro que o frontend pode tratar (ex: "tente novamente em 5s")
+      throw new UnauthorizedException('A assinatura ainda não está ativa. Aguardando confirmação do pagamento.');
     }
 
-    // O pagamento está ATIVO! Geramos um novo token.
-    // (A lógica de 'login' pode ser chamada aqui para evitar repetição)
-    
-    // Por simplicidade, vamos repetir a lógica do payload do login:
-    const unidadesDaOrg = await this.prisma.unidade.findMany({
+    // 3. O pagamento está ATIVO!
+    // Reutiliza a lógica de login para gerar um novo payload completo.
+    // (Poderíamos chamar this.login() mas isso exigiria a senha,
+    // então é melhor replicar a lógica do payload aqui)
+
+    const organization = user.organization;
+    let unidadesDaOrg = await this.prisma.unidade.findMany({
       where: { organizationId: user.organizationId },
       select: { id: true, name: true },
     });
@@ -273,9 +257,9 @@ export class AuthService {
       companyName: user.companyName, role: user.role, orgId: user.organizationId,
       unidades: unidadesDaOrg, unidadesPermitidas: unidadesPermitidas,
       allowedPages: allowedPages,
-      subscriptionStatus: user.organization.subscriptionStatus, // Agora 'ACTIVE'
-      unidadeLimit: user.organization.unidadeLimit,
-      planType: user.organization.planType,
+      subscriptionStatus: organization.subscriptionStatus, // Agora 'ACTIVE'
+      unidadeLimit: organization.unidadeLimit,
+      planType: organization.planType,
     };
 
     return {
